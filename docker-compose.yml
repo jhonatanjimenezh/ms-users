@@ -1,0 +1,21 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    container_name: mongo-container
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: adminpass
+
+  ws-users:
+    build: .
+    container_name: ws-users
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      DATABASE_CONNECTION: mongodb://admin:adminpass@mongo-container:27017/ws-users?authSource=admin
+      JWT_SECRET: supersecreto
